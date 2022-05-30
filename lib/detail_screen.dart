@@ -1,21 +1,15 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:news/main.dart';
-import 'package:news/widgets/First.dart';
-import 'package:news/widgets/SecondCont.dart';
-// import 'package:news/container/First.dart';
-// import 'package:news/container/SecondCont.dart';
+import '../models/news.dart';
+import '../widgets/SecondCont.dart';
 
-class Details extends StatelessWidget {
+class NewsDetails extends StatelessWidget {
   static const String routeName = '/details';
 
-  // Widget buildDescriptionContainer()
+  const NewsDetails({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-
-
-    Map data = ModalRoute.of(context)?.settings.arguments as Map;
-
+    News data = ModalRoute.of(context)?.settings.arguments as News;
     //TODO 5/14/2022: Handle Orientation change
     //TODO 5/14/2022: Expanded vs Flexible
     //TODO 5/14/2022: Creating separate Widgets vs builder methods
@@ -23,70 +17,124 @@ class Details extends StatelessWidget {
     //TODO 5/14/2022: Animations in Flutter
     //TODO 5/14/2022: Top 10 libraries in Flutter
     //TODO 5/14/2022: Getting User Input
-
-
     return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(30),
-                child: Image.network(
-                  data['urlToImage'].toString(),
-                  height:Second.checkScreenMode==Orientation.landscape? 200:300,
-                  fit: BoxFit.fill,
-                ),
-              ),
-              margin: EdgeInsets.all(10),
+        backgroundColor: Colors.black12,
+        body: CustomScrollView(slivers: [
+          SliverAppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_rounded),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-            Text(
-              data['author'].toString(),
-              style:
-                  const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-              textAlign: TextAlign.center,
+            // TODO : INTL package
+            forceElevated: true,
+            elevation: 5,
+            pinned: true,
+            backgroundColor: Colors.black,
+            actions: const [
+              Padding(
+                  padding: EdgeInsets.only(right: 30), child: Icon(Icons.save))
+            ],
+            // backgroundColor: Colors.black,
+            expandedHeight: 290,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Stack(
+                children: [
+                  Image.network(
+                    data.urlToImage.toString(),
+                    fit: BoxFit.fitHeight,
+                    height: 310,
+                  ),
+                  Positioned(
+                      top: 140,
+                      left: 30,
+                      right: 20,
+                      bottom: 5,
+                      child: data.author != null
+                          ? Text(
+                              data.title.toString(),
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                  fontSize: 22, color: Colors.white),
+                            )
+                          : const Text('author',
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.white)))
+                ],
+              ),
             ),
-            SecondCont(
-                const Text(
-                  'Title',
-                  style: TextStyle(fontSize: 30, color: Colors.greenAccent),
-                ),
-                Text(
-                  data['title'].toString(),
-                  style: Theme.of(context).textTheme.headline2,
-                )),
-            FirstCont(
-              const  Text(
-                'Description',
-                style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.greenAccent,
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                data['description'].toString(),
-                style: Theme.of(context).textTheme.headline3,
-              ),
-            ),
-            SecondCont(
-              const Text(
-                'Content',
-                style: TextStyle(
-                    fontSize: 30,
-                    color: Colors.greenAccent,
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                data['content'].toString(),
-                style: Theme.of(context).textTheme.headline1,
-              ),
-            )
-          ],
-        ),
+            bottom: AppBarCustom(),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate([
+              Container(
+                  width: 100,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(30),
+                          topLeft: Radius.circular(30))),
+                  child: Column(
+                    children: [
+                      DetailsNewsTitle(data.title.toString(),
+                          Theme.of(context).textTheme.headline1),
+                      DetailsNewsTitle(data.description.toString(),
+                          Theme.of(context).textTheme.headline2),
+                      DetailsNewsTitle(data.content.toString(),
+                          Theme.of(context).textTheme.headline3),
+                    ],
+                  )),
+            ]),
+          )
+        ]));
+  }
+}
+
+class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Container(
+      height: 50,
+      padding:const EdgeInsets.symmetric(horizontal: 35),
+      // margin: const EdgeInsets.symmetric(horizontal: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Colors.black,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+        children: const [
+          Icon(
+            Icons.facebook,
+            color: Colors.white60,
+          ),
+          Icon(
+            Icons.whatsapp,
+            color: Colors.white60,
+          ),
+          Icon(
+            Icons.email,
+            color: Colors.white60,
+          ),
+          Icon(
+            Icons.share,
+            color: Colors.white60,
+          ),
+          Icon(
+            Icons.favorite,
+            color: Colors.white60,
+          )
+        ],
       ),
     );
   }
+
+  @override
+  // TODO: implement preferredSize
+  Size get preferredSize => Size.fromHeight(80);
 }
