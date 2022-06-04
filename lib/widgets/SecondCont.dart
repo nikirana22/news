@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
 class DetailsNewsTitle extends StatelessWidget {
-  final String _titleData;
+  final String titleData;
   final TextStyle? textStyle;
-  DetailsNewsTitle( this._titleData,this.textStyle);
+   DetailsNewsTitle({required this.titleData,this.textStyle,Key? key}):super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(20),
+      padding:const EdgeInsets.all(20),
       child: Text(
-        _titleData.toString(),
+        titleData.toString(),
         style:textStyle
       ),
     );

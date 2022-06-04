@@ -9,9 +9,9 @@ class Header extends StatelessWidget {
   int index;
   List<News> favoriteNewsList;
 
- Header({required this.data, required this.onClick,
+ Header({Key? key, required this.data, required this.onClick,
    required this.favoriteNewsList,
-   required this.index});
+   required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

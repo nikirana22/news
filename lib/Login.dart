@@ -3,11 +3,10 @@ import 'package:provider/provider.dart';
 
 class Login extends StatelessWidget {
   Function loginButton;
-  Login(this.loginButton);
+  Login(this.loginButton, {Key? key}) : super(key: key);
 
   TextEditingController email=TextEditingController();
   TextEditingController password=TextEditingController();
-
 
 
   @override

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Tranding extends StatelessWidget {
-  const Tranding({Key? key}) : super(key: key);
+  Tranding({required this.moreButtonClick,Key? key}) : super(key: key);
+
+  VoidCallback moreButtonClick;
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +13,7 @@ class Tranding extends StatelessWidget {
       color: Colors.white,
       child: Row(
         children: [
+          // Icon(Icons.point)
           const Text(
             'trending ',
 
@@ -19,7 +22,7 @@ class Tranding extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: moreButtonClick,
             child: const Text(
               'More',
               style: TextStyle(color: Colors.white),
@@ -30,7 +33,7 @@ class Tranding extends StatelessWidget {
                         borderRadius:
                         BorderRadius.circular(30))),
                 backgroundColor:
-                MaterialStateProperty.all(Colors.red)),
+                MaterialStateProperty.all(const Color.fromRGBO(215, 79, 103, 1))),
           )
         ],
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

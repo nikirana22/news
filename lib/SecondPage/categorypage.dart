@@ -36,6 +36,8 @@ class CategoryPage extends StatefulWidget {
   final List _addGameList = [];
   final List<bool> _isLiked = List.generate(12, (index) => false);
 
+  CategoryPage({Key? key}) : super(key: key);
+
 
   @override
   State<CategoryPage> createState() => _CategoryPageState();

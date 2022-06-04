@@ -1,35 +1,46 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:news/Login.dart';
-import 'package:news/my-provider.dart';
-import 'package:news/widgets/bottom_nav_bar.dart';
-import './CustomAppBar.dart';
+import 'package:news/changeconnectivity/change_notifier.dart';
+import 'package:news/database/dao_database.dart';
+import 'package:news/entity/dao_data.dart';
+import 'package:news/widgets/api_data.dart';
+import 'package:provider/provider.dart';
 
 //Todo try to find out switch button on and off logic
 //Todo try to make to text like UI (next image text is showing try to hide it)
 
 // Todo ------------>>>>>>>>BOOKMARK  <<<<<<<<<<<<---------
-import './screens/Bookmark.dart';
 import './detail_screen.dart';
 import './screens/Home.dart';
 import './SecondPage/categorypage.dart';
+import 'dao/dao.dart';
 
-void main() {
-  runApp(
-    MyApp(),
-  );
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  //TODO: can we make this class Singleton
+  runApp(ChangeNotifierProvider<ChangeConnectivity>(
+          create: (context) {
+            return ChangeConnectivity();
+          },
+          child: MyApp())
+      // MyApp(dao: dao),
+      );
 }
 //TODO 5/14/2022: Refactor layout to make FutureBuilder as root Layout
 
 class MyApp extends StatelessWidget {
+  // Dao dao;
+  // MyApp({required this.dao,Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        // Home.login:(context)=>Home(),
-        NewsDetails.routeName: (context) => NewsDetails(),
+        NewsDetails.routeName: (context) => const NewsDetails(),
         CategoryPage.data: (context) => CategoryPage(),
-
       },
+
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -47,17 +58,20 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Regular', fontSize: 20, color: Colors.grey),
         ),
       ),
+      // home: _MyHomePage(dao: dao,),
       home: _MyHomePage(),
     );
   }
 }
+
 class _MyHomePage extends StatefulWidget {
+  // Dao dao;
+  // _MyHomePage({required this.dao});
   @override
   State<StatefulWidget> createState() {
     return _MyHomePageState();
   }
 }
-
 //TODO 20-05-2022: Make this class private
 //TODO 20-05-2022: Why is favoriteNewsData static?
 //TODO 20-05-2022: Need to fix like icon updating after a little drag on ListView.
@@ -66,24 +80,30 @@ class _MyHomePage extends StatefulWidget {
 //TODO 20-05-2022: Figure out ways to make custom AppBar.
 
 class _MyHomePageState extends State<_MyHomePage> {
-  // Map _favoriteNewsData = {}; // here is some issue
   int _selectedPos = 0;
 
+//----------------------------------------------------
+//--  //TODO : which method calls in last (Destroy)  --
+//-----------------------------------------------------
   @override
   Widget build(BuildContext context) {
-    return  BottomNavBar(onPageChange: onPageChange,position:_selectedPos);
-    // return Home();
+    return ApiData(onPageChange: onPageChange, position: _selectedPos);
+
+    // ApiData(onPageChange: onPageChange,position:_selectedPos,);
   }
-  void loginButton(String email,String password){
+
+  void loginButton(String email, String password) {
     print(email);
-    if(email!=''&&password!='') {
+    if (email != '' && password != '') {
       Navigator.pushReplacementNamed(context, Home.login);
-      Navigator.pushNamed(context, Home.login,arguments: {'email':email,'pass':password});
+      Navigator.pushNamed(context, Home.login,
+          arguments: {'email': email, 'pass': password});
     }
   }
-  void onPageChange(int index){
+
+  void onPageChange(int index) {
     setState(() {
-      _selectedPos=index;
+      _selectedPos = index;
       print('this is my $index');
     });
   }

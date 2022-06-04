@@ -10,20 +10,20 @@ import '../detail_screen.dart';
 
 class Home extends StatelessWidget {
   static const String login = "/login";
+  VoidCallback moreButtonClick;
   String category;
   List<String> categoryList;
   Articles? articles;
   Function categoryChangeButtonClick;
-
   Home(
       {required this.category,
       required this.categoryList,
       required this.articles,
       required this.categoryChangeButtonClick,
+        required this.moreButtonClick,
       Key? key})
       : super(key: key);
 //https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=a76eab3a9db6401986b50fc441c1ce56
-
   //TODO  Try to change the color of the  container on Button click
   @override
   Widget build(BuildContext context) {
@@ -61,8 +61,8 @@ class Home extends StatelessWidget {
                   Tab(text: categoryList[2].toString()),
                 ],
                 onTap: (index) => categoryChangeButtonClick(index),
-                labelColor: Colors.red,
-                indicatorColor: Colors.red,
+                labelColor:const Color.fromRGBO(182, 105, 122, 1),
+                indicatorColor: const Color.fromRGBO(182, 105, 122, 1),
                 unselectedLabelColor: Colors.black26,
               )),
           body: Column(
@@ -78,9 +78,9 @@ class Home extends StatelessWidget {
                     loop: false,
                     scale: 0.85,
                     viewportFraction: 0.8,
-                    itemCount: articles!.newsList.length,
+                    itemCount: articles?.newsList.length,
                     itemBuilder: (_, index) {
-                      if (articles!.newsList[index].urlToImage != null) {
+                      if (articles?.newsList[index].urlToImage != null) {
                         return NewsData(
                           author: articles!.newsList[index].author.toString(),
                           index: index,
@@ -93,7 +93,7 @@ class Home extends StatelessWidget {
                       }
                     }),
               ),
-              const Tranding(),
+              Tranding(moreButtonClick: moreButtonClick,),
               BottomNews(
                 articles: articles,
               ),

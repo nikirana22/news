@@ -34,7 +34,8 @@ class NewsDetails extends StatelessWidget {
             backgroundColor: Colors.black,
             actions: const [
               Padding(
-                  padding: EdgeInsets.only(right: 30), child: Icon(Icons.save))
+                  padding: EdgeInsets.only(right: 30),
+                  child: Icon(Icons.bookmark))
             ],
             // backgroundColor: Colors.black,
             expandedHeight: 290,
@@ -78,12 +79,37 @@ class NewsDetails extends StatelessWidget {
                           topLeft: Radius.circular(30))),
                   child: Column(
                     children: [
-                      DetailsNewsTitle(data.title.toString(),
-                          Theme.of(context).textTheme.headline1),
-                      DetailsNewsTitle(data.description.toString(),
-                          Theme.of(context).textTheme.headline2),
-                      DetailsNewsTitle(data.content.toString(),
-                          Theme.of(context).textTheme.headline3),
+                      // Text(
+                      //   data.title.toString(),
+                      //   style: Theme.of(context).textTheme.headline1,
+                      // ),
+                      // Text(
+                      //   data.title.toString(),
+                      //   style: Theme.of(context).textTheme.headline2,
+                      // ),
+                      // Text(
+                      //   data.title.toString(),
+                      //   style: Theme.of(context).textTheme.headline3,
+                      // ),
+                      // Text('hello everyone'),
+                      //
+                      DetailsNewsTitle(
+                        titleData: data.title.toString(),
+                        textStyle: Theme.of(context).textTheme.headline1,
+                      ),
+                      DetailsNewsTitle(
+                        titleData: data.description.toString(),
+                        textStyle: Theme.of(context).textTheme.headline2,
+                      ),
+                      DetailsNewsTitle(
+                        titleData: data.content.toString(),
+                        textStyle: Theme.of(context).textTheme.headline3,
+                      ),
+                      //
+                      // DetailsNewsTitle(data.description.toString(),
+                      //     Theme.of(context).textTheme.headline2),
+                      // DetailsNewsTitle(data.content.toString(),
+                      //     Theme.of(context).textTheme.headline3),
                     ],
                   )),
             ]),
@@ -93,13 +119,12 @@ class NewsDetails extends StatelessWidget {
 }
 
 class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      height: 50,
-      padding:const EdgeInsets.symmetric(horizontal: 35),
+      height: 60,
+      padding: const EdgeInsets.symmetric(horizontal: 35),
       // margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -107,26 +132,30 @@ class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
         children: const [
           Icon(
             Icons.facebook,
+            size: 15,
             color: Colors.white60,
           ),
           Icon(
             Icons.whatsapp,
             color: Colors.white60,
+            size: 15,
           ),
           Icon(
             Icons.email,
             color: Colors.white60,
+            size: 15,
           ),
           Icon(
             Icons.share,
             color: Colors.white60,
+            size: 15,
           ),
           Icon(
             Icons.favorite,
+            size: 15,
             color: Colors.white60,
           )
         ],
