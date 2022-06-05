@@ -111,7 +111,4 @@ class Home extends StatelessWidget {
     Navigator.pushNamed(context, NewsDetails.routeName,
         arguments: articles?.newsList[index]);
   }
-// void gotoCategoryPage() async {
-//   List list = await Navigator.pushNamed(context, CategoryPage.data) as List;
-// }
 }

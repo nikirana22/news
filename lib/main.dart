@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import './utils/change_notifier.dart';
 import 'package:news/widgets/api_data.dart';
@@ -6,6 +7,8 @@ import 'package:provider/provider.dart';
 // Todo ------------>>>>>>>>BOOKMARK  <<<<<<<<<<<<---------
 import 'screens/detail_screen.dart';
 import './screens/Home.dart';
+import './SecondPage/categorypage.dart';
+import 'dao/dao.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,11 +22,8 @@ void main() async {
       // MyApp(dao: dao),
       );
 }
-//TODO 5/14/2022: Refactor layout to make FutureBuilder as root Layout
 
 class MyApp extends StatelessWidget {
-  // Dao dao;
-  // MyApp({required this.dao,Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +56,7 @@ class MyApp extends StatelessWidget {
 }
 
 class _MyHomePage extends StatefulWidget {
-  // Dao dao;
-  // _MyHomePage({required this.dao});
+
   @override
   State<StatefulWidget> createState() {
     return _MyHomePageState();
@@ -73,14 +72,10 @@ class _MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<_MyHomePage> {
   int _selectedPos = 0;
 
-//----------------------------------------------------
-//--  //TODO : which method calls in last (Destroy)  --
-//-----------------------------------------------------
   @override
   Widget build(BuildContext context) {
     return ApiData(onPageChange: onPageChange, position: _selectedPos);
 
-    // ApiData(onPageChange: onPageChange,position:_selectedPos,);
   }
 
   void loginButton(String email, String password) {
@@ -95,7 +90,6 @@ class _MyHomePageState extends State<_MyHomePage> {
   void onPageChange(int index) {
     setState(() {
       _selectedPos = index;
-      print('this is my $index');
     });
   }
 }
