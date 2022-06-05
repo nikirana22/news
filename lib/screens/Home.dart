@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
-import '../detail_screen.dart';
+import 'detail_screen.dart';
 import '../models/articles.dart';
 import '../widgets/bottom_news.dart';
 import '../widgets/news_daat.dart';

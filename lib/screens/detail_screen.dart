@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../models/news.dart';
-import '../widgets/SecondCont.dart';
+import '../../models/news.dart';
+import '../../widgets/SecondCont.dart';
 
 class NewsDetails extends StatelessWidget {
   static const String routeName = '/details';

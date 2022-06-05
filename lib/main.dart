@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news/changeconnectivity/change_notifier.dart';
+import './utils/change_notifier.dart';
 import 'package:news/widgets/api_data.dart';
 import 'package:provider/provider.dart';
 
-import './SecondPage/categorypage.dart';
-
 // Todo ------------>>>>>>>>BOOKMARK  <<<<<<<<<<<<---------
-import './detail_screen.dart';
+import 'screens/detail_screen.dart';
 import './screens/Home.dart';
 
 void main() async {
@@ -32,7 +30,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       routes: {
         NewsDetails.routeName: (context) => const NewsDetails(),
-        CategoryPage.data: (context) => CategoryPage(),
       },
 
       debugShowCheckedModeBanner: false,

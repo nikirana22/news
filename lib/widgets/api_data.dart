@@ -1,15 +1,15 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:news/entity/dao_data.dart';
 import 'package:provider/provider.dart';
-import '../changeconnectivity/change_notifier.dart';
+
 import '../dao/dao.dart';
 import '../database/dao_database.dart';
-import '../screens/Home.dart';
-
+import '../entity/dao_data.dart';
 import '../models/articles.dart';
 import '../parsers/news_parser.dart';
+import '../screens/Home.dart';
+import '../utils/change_notifier.dart';
 
 //TODO 01/06/2022: Check API if there is an endpoint which can give all
 // category data at once so we can filter it later on in app
@@ -41,6 +41,7 @@ class _ApiDataState extends State<ApiData> with WidgetsBindingObserver {
   Articles? _articles;
 
   List<DataDao>? lastList;
+
   // AppLifecycleState? _appLifecycleState;
   static const List<String> _categoryList = [
     'science',
@@ -51,6 +52,7 @@ class _ApiDataState extends State<ApiData> with WidgetsBindingObserver {
   List<Widget>? _pages;
   bool a = false;
   Articles? lastArticle;
+
   // _ApiDataState({required this.dao});
 
   @override
@@ -62,7 +64,7 @@ class _ApiDataState extends State<ApiData> with WidgetsBindingObserver {
 
   void getDataa() async {
     List<DataDao> list = await widget.dao!.getData();
-    lastArticle =NewsParser.change(list);
+    lastArticle = NewsParser.change(list);
     print('database data is getting ${list.length}');
   }
 
@@ -97,68 +99,60 @@ class _ApiDataState extends State<ApiData> with WidgetsBindingObserver {
         print(builder.connectivityResult);
       });
       // if(builder.connectivityResult==ConnectivityResult.wifi){
-        // getDataa();
-        return Scaffold(
-            backgroundColor: Colors.black,
-            body: FutureBuilder(
-                future: _api,
-                //Todo 5/20/2022   change this
-                builder: (_, snapshot) {
-                  if (snapshot.hasData) {
-                    return _pages![widget.position];
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                }),
-
-
-
-            bottomNavigationBar: BottomNavigationBar(
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.white60,
-              onTap: (ind) => widget.onPageChange(ind),
-              currentIndex: widget.position,
-              items: const [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: '',
-                    backgroundColor: Colors.black),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.notification_add), label: 'Notification'),
-                BottomNavigationBarItem(icon: Icon(Icons.save), label: "saved"),
-                BottomNavigationBarItem(icon: Icon(Icons.boy), label: "user")
-              ],
-            ));
+      // getDataa();
+      return Scaffold(
+          backgroundColor: Colors.black,
+          body: FutureBuilder(
+              future: _api,
+              //Todo 5/20/2022   change this
+              builder: (_, snapshot) {
+                if (snapshot.hasData) {
+                  return _pages![widget.position];
+                } else {
+                  return const Center(child: CircularProgressIndicator());
+                }
+              }),
+          bottomNavigationBar: BottomNavigationBar(
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white60,
+            onTap: (ind) => widget.onPageChange(ind),
+            currentIndex: widget.position,
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: '',
+                  backgroundColor: Colors.black),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.notification_add), label: 'Notification'),
+              BottomNavigationBarItem(icon: Icon(Icons.save), label: "saved"),
+              BottomNavigationBarItem(icon: Icon(Icons.boy), label: "user")
+            ],
+          ));
 
       // else {
       //   print('is comming in else statement as well -->');
       //   // listdata();
 
-
-
-
-            //
-            //
-            // bottomNavigationBar: BottomNavigationBar(
-            //   selectedItemColor: Colors.white,
-            //   unselectedItemColor: Colors.white60,
-            //   onTap: (ind) => widget.onPageChange(ind),
-            //   currentIndex: widget.position,
-            //   items: const [
-            //     BottomNavigationBarItem(
-            //         icon: Icon(Icons.home),
-            //         label: 'Home',
-            //         backgroundColor: Colors.black),
-            //     BottomNavigationBarItem(
-            //         icon: Icon(Icons.notification_add), label: 'Notification'),
-            //     BottomNavigationBarItem(icon: Icon(Icons.save), label: "saved"),
-            //     BottomNavigationBarItem(icon: Icon(Icons.boy), label: "user")
-            //   ],
-            // )
-    });}
-
-
-
+      //
+      //
+      // bottomNavigationBar: BottomNavigationBar(
+      //   selectedItemColor: Colors.white,
+      //   unselectedItemColor: Colors.white60,
+      //   onTap: (ind) => widget.onPageChange(ind),
+      //   currentIndex: widget.position,
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.home),
+      //         label: 'Home',
+      //         backgroundColor: Colors.black),
+      //     BottomNavigationBarItem(
+      //         icon: Icon(Icons.notification_add), label: 'Notification'),
+      //     BottomNavigationBarItem(icon: Icon(Icons.save), label: "saved"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.boy), label: "user")
+      //   ],
+      // )
+    });
+  }
 
   void categoryChangeButtonClick(int index) {
     setState(() {
