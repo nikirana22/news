@@ -91,72 +91,38 @@ class _ApiDataState extends State<ApiData> with WidgetsBindingObserver {
   // }
   @override
   Widget build(BuildContext context) {
-    return Consumer<ChangeConnectivity>(builder: (context, builder, child) {
-      Connectivity().onConnectivityChanged.listen((event) {
-        builder.connectivityChange(event);
-        print(builder.connectivityResult);
-      });
-      // if(builder.connectivityResult==ConnectivityResult.wifi){
-        // getDataa();
-        return Scaffold(
-            backgroundColor: Colors.black,
-            body: FutureBuilder(
-                future: _api,
-                //Todo 5/20/2022   change this
-                builder: (_, snapshot) {
-                  if (snapshot.hasData) {
-                    return _pages![widget.position];
-                  } else {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                }),
+    // claas >
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: FutureBuilder(
+          future: _api,
+          //Todo 5/20/2022   change this
+          builder: (_, snapshot) {
+            if (snapshot.hasData) {
+              return _pages![widget.position];
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
 
 
-
-            bottomNavigationBar: BottomNavigationBar(
-              selectedItemColor: Colors.white,
-              unselectedItemColor: Colors.white60,
-              onTap: (ind) => widget.onPageChange(ind),
-              currentIndex: widget.position,
-              items: const [
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: '',
-                    backgroundColor: Colors.black),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.notification_add), label: 'Notification'),
-                BottomNavigationBarItem(icon: Icon(Icons.save), label: "saved"),
-                BottomNavigationBarItem(icon: Icon(Icons.boy), label: "user")
-              ],
-            ));
-
-      // else {
-      //   print('is comming in else statement as well -->');
-      //   // listdata();
-
-
-
-
-            //
-            //
-            // bottomNavigationBar: BottomNavigationBar(
-            //   selectedItemColor: Colors.white,
-            //   unselectedItemColor: Colors.white60,
-            //   onTap: (ind) => widget.onPageChange(ind),
-            //   currentIndex: widget.position,
-            //   items: const [
-            //     BottomNavigationBarItem(
-            //         icon: Icon(Icons.home),
-            //         label: 'Home',
-            //         backgroundColor: Colors.black),
-            //     BottomNavigationBarItem(
-            //         icon: Icon(Icons.notification_add), label: 'Notification'),
-            //     BottomNavigationBarItem(icon: Icon(Icons.save), label: "saved"),
-            //     BottomNavigationBarItem(icon: Icon(Icons.boy), label: "user")
-            //   ],
-            // )
-    });}
-
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white60,
+        onTap: (ind) => widget.onPageChange(ind),
+        currentIndex: widget.position,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: '',
+              backgroundColor: Colors.black),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.notification_add), label: 'Notification'),
+          BottomNavigationBarItem(icon: Icon(Icons.save), label: "saved"),
+          BottomNavigationBarItem(icon: Icon(Icons.boy), label: "user")
+        ],
+      ),);
+  }
 
 
 
