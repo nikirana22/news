@@ -1,25 +1,20 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import './utils/change_notifier.dart';
 import 'package:news/widgets/api_data.dart';
 import 'package:provider/provider.dart';
 
-// Todo ------------>>>>>>>>BOOKMARK  <<<<<<<<<<<<---------
 import 'screens/detail_screen.dart';
 import './screens/Home.dart';
-import './SecondPage/categorypage.dart';
 import 'dao/dao.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  //TODO: can we make this class Singleton
   runApp(ChangeNotifierProvider<ChangeConnectivity>(
           create: (context) {
             return ChangeConnectivity();
           },
           child: MyApp())
-      // MyApp(dao: dao),
       );
 }
 
@@ -49,7 +44,6 @@ class MyApp extends StatelessWidget {
               fontFamily: 'Regular', fontSize: 20, color: Colors.grey),
         ),
       ),
-      // home: _MyHomePage(dao: dao,),
       home: _MyHomePage(),
     );
   }
@@ -62,25 +56,19 @@ class _MyHomePage extends StatefulWidget {
     return _MyHomePageState();
   }
 }
-//TODO 20-05-2022: Make this class private
-//TODO 20-05-2022: Why is favoriteNewsData static?
-//TODO 20-05-2022: Need to fix like icon updating after a little drag on ListView.
-// P.S: It's an IconButton & it's state is getting updated when ListView updates itself.
-//TODO 20-05-2022: Need to fix like icon updating after a little drag on ListView.
-//TODO 20-05-2022: Figure out ways to make custom AppBar.
 
 class _MyHomePageState extends State<_MyHomePage> {
   int _selectedPos = 0;
 
   @override
   Widget build(BuildContext context) {
-    return ApiData(onPageChange: onPageChange, position: _selectedPos);
+    return ApiData();
 
   }
 
   void loginButton(String email, String password) {
     print(email);
-    if (email != '' && password != '') {
+    if (email.isNotEmpty && password.isNotEmpty) {
       Navigator.pushReplacementNamed(context, Home.login);
       Navigator.pushNamed(context, Home.login,
           arguments: {'email': email, 'pass': password});

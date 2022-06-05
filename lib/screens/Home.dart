@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
-import 'detail_screen.dart';
-import '../models/articles.dart';
+import '../providers/news.dart';
 import '../widgets/bottom_news.dart';
 import '../widgets/news_daat.dart';
 import '../widgets/tranding.dart';
+import 'detail_screen.dart';
 
 //TODO : what is the diff between provider.of() and
 
@@ -14,7 +14,7 @@ class Home extends StatelessWidget {
   VoidCallback moreButtonClick;
   String category;
   List<String> categoryList;
-  Articles? articles;
+  List<News> articles;
   Function categoryChangeButtonClick;
 
   Home(
@@ -81,14 +81,14 @@ class Home extends StatelessWidget {
                     loop: false,
                     scale: 0.85,
                     viewportFraction: 0.8,
-                    itemCount: articles?.newsList.length,
+                    itemCount: articles.length,
                     itemBuilder: (_, index) {
-                      if (articles?.newsList[index].urlToImage != null) {
+                      if (articles[index].urlToImage != null) {
                         return NewsData(
-                          author: articles!.newsList[index].author.toString(),
+                          author: articles[index].author.toString(),
                           index: index,
-                          image: articles!.newsList[index].urlToImage!,
-                          title: articles!.newsList[index].title!,
+                          image: articles[index].urlToImage!,
+                          title: articles[index].title!,
                           imageClick: gotoDetailsPage,
                         );
                       } else {
@@ -109,6 +109,6 @@ class Home extends StatelessWidget {
 
   void gotoDetailsPage(int index, BuildContext context) {
     Navigator.pushNamed(context, NewsDetails.routeName,
-        arguments: articles?.newsList[index]);
+        arguments: articles[index]);
   }
 }

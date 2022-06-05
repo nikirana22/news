@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../models/news.dart';
+import '../providers/news.dart';
 import '../../widgets/SecondCont.dart';
 
 class NewsDetails extends StatelessWidget {

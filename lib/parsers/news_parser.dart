@@ -1,43 +1,30 @@
-import 'package:news/entity/dao_data.dart';
-import 'package:news/models/articles.dart';
-
-import '../models/news.dart';
+import '../entity/dao_data.dart';
+import '../providers/news.dart';
 
 class NewsParser {
   // static Dao? datadao;
   // static DataDao? dao;
-  static const String _authorKey = 'author';
-  static const String _title = 'title';
-  static const String _description = 'description';
-  static const String _url = 'url';
-  static const String _urlToImage = 'urlToImage';
-  static const String _publishedAt = 'publishedAt';
-  static const String _content = 'content';
+  static const String authorKey = 'author';
+  static const String title = 'title';
+  static const String description = 'description';
+  static const String url = 'url';
+  static const String urlToImage = 'urlToImage';
+  static const String publishedAt = 'publishedAt';
+  static const String content = 'content';
 
   static News parseNews(Map<String, Object> jsonMap) {
-     // dao= DataDao(
-     //    author: jsonMap[_authorKey] as String,
-     //    title: jsonMap[_title] as String,
-     //    description: jsonMap[_description] as String,
-     //    url: jsonMap[_url] as String,
-     //    urlToImage: jsonMap[_urlToImage] as String,
-     //    publishedAt: jsonMap[_publishedAt] as String,
-     //    content: jsonMap[_content] as String);
-
     return News(
-        author: jsonMap[_authorKey] as String,
-        title: jsonMap[_title] as String,
-        description: jsonMap[_description] as String,
-        url: jsonMap[_url] as String,
-        urlToImage: jsonMap[_urlToImage] as String,
-        publishedAt: jsonMap[_publishedAt] as String,
-        content: jsonMap[_content] as String);
+        author: jsonMap[authorKey] as String,
+        title: jsonMap[title] as String,
+        description: jsonMap[description] as String,
+        url: jsonMap[url] as String,
+        urlToImage: jsonMap[urlToImage] as String,
+        publishedAt: jsonMap[publishedAt] as String,
+        content: jsonMap[content] as String);
   }
 
-  static Articles parseArticles(List articlesList) {
-    Articles articles = Articles();
-    articles.setNewsList = articlesList.map((e) => parseNews(e)).toList();
-    return articles;
+  static List<News> parseArticles(List articlesList) {
+    return articlesList.map((e) => parseNews(e)).toList();
   }
 
   static Articles change(List<DataDao> list) {
