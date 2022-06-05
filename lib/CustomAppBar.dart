@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   VoidCallback onContinueButtonClick;
 
-  CustomAppBar({Key? key, required this.onContinueButtonClick}) : super(key: key);
+  CustomAppBar({Key? key, required this.onContinueButtonClick})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

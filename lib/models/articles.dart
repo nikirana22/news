@@ -2,6 +2,7 @@ import '../models/news.dart';
 
 class Articles {
   List<News>? _newsList;
+
   List<News> get newsList {
     return [...?_newsList];
   }

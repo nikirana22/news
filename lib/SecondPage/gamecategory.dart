@@ -11,9 +11,7 @@ class GamesCategory extends StatelessWidget {
       {required this.gameCategoryIcon,
       required this.gameCategoryName,
       required this.onCategorySelected,
-      required this.isClicked
-      }
-      );
+      required this.isClicked});
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +21,7 @@ class GamesCategory extends StatelessWidget {
           mainAxisExtent: 110,
           crossAxisSpacing: 5,
           mainAxisSpacing: 5,
-          crossAxisCount: 3
-      ),
+          crossAxisCount: 3),
       itemBuilder: (BuildContext context, int index) {
         return SizedBox(
           height: 400,
@@ -41,7 +38,8 @@ class GamesCategory extends StatelessWidget {
                         borderRadius: BorderRadius.circular(40)),
                     elevation: 5,
                     shadowColor: Colors.blue,
-                    color: isClicked[index] == false// TODO how can we use different logic instead of this
+                    color: isClicked[index] ==
+                            false // TODO how can we use different logic instead of this
                         ? Colors.white
                         : const Color.fromRGBO(37, 113, 204, 1),
                     child: Center(

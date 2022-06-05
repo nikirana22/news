@@ -22,4 +22,3 @@ class News {
     return 'author : $author ,title : $title, description : $description , url: $url';
   }
 }
-

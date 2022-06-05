@@ -1,19 +1,13 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:news/changeconnectivity/change_notifier.dart';
-import 'package:news/database/dao_database.dart';
-import 'package:news/entity/dao_data.dart';
 import 'package:news/widgets/api_data.dart';
 import 'package:provider/provider.dart';
 
-//Todo try to find out switch button on and off logic
-//Todo try to make to text like UI (next image text is showing try to hide it)
+import './SecondPage/categorypage.dart';
 
 // Todo ------------>>>>>>>>BOOKMARK  <<<<<<<<<<<<---------
 import './detail_screen.dart';
 import './screens/Home.dart';
-import './SecondPage/categorypage.dart';
-import 'dao/dao.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

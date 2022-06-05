@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import '../widgets/tranding.dart';
+
+import '../detail_screen.dart';
 import '../models/articles.dart';
 import '../widgets/bottom_news.dart';
 import '../widgets/news_daat.dart';
-import '../detail_screen.dart';
+import '../widgets/tranding.dart';
 
 //TODO : what is the diff between provider.of() and
 
@@ -15,14 +16,16 @@ class Home extends StatelessWidget {
   List<String> categoryList;
   Articles? articles;
   Function categoryChangeButtonClick;
+
   Home(
       {required this.category,
       required this.categoryList,
       required this.articles,
       required this.categoryChangeButtonClick,
-        required this.moreButtonClick,
+      required this.moreButtonClick,
       Key? key})
       : super(key: key);
+
 //https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=a76eab3a9db6401986b50fc441c1ce56
   //TODO  Try to change the color of the  container on Button click
   @override
@@ -61,7 +64,7 @@ class Home extends StatelessWidget {
                   Tab(text: categoryList[2].toString()),
                 ],
                 onTap: (index) => categoryChangeButtonClick(index),
-                labelColor:const Color.fromRGBO(182, 105, 122, 1),
+                labelColor: const Color.fromRGBO(182, 105, 122, 1),
                 indicatorColor: const Color.fromRGBO(182, 105, 122, 1),
                 unselectedLabelColor: Colors.black26,
               )),
@@ -93,7 +96,9 @@ class Home extends StatelessWidget {
                       }
                     }),
               ),
-              Tranding(moreButtonClick: moreButtonClick,),
+              Tranding(
+                moreButtonClick: moreButtonClick,
+              ),
               BottomNews(
                 articles: articles,
               ),

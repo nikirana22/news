@@ -1,7 +1,5 @@
 import 'package:news/entity/dao_data.dart';
 
-import '../database_parser/mylist.dart';
-
 class DaoParser {
   static const String _authorKey = 'author';
   static const String _title = 'title';
@@ -21,11 +19,10 @@ class DaoParser {
         publishedAt: map[_publishedAt],
         content: map[_content]);
   }
-  // static MyList sendList(List list){
-  //   MyList myList=MyList();
-  //   myList.ourList=list.map((e) => sendData(e).toList());
-  //   return
-  // }
-
+// static MyList sendList(List list){
+//   MyList myList=MyList();
+//   myList.ourList=list.map((e) => sendData(e).toList());
+//   return
+// }
 
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import './gamecategory.dart';
 
 //TODO: when we go to next page then how appbar automatically shows back arrow button  <-
@@ -38,20 +39,19 @@ class CategoryPage extends StatefulWidget {
 
   CategoryPage({Key? key}) : super(key: key);
 
-
   @override
   State<CategoryPage> createState() => _CategoryPageState();
 }
+
 // TODO how can we change the color of <- icon in appbar
 class _CategoryPageState extends State<CategoryPage> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
 //TODO:  who can we change the color of taskbar
       appBar: AppBar(
         leading: IconButton(
-          onPressed: (){
+          onPressed: () {
             Navigator.pop(context);
           },
           icon: const Icon(
@@ -64,7 +64,10 @@ class _CategoryPageState extends State<CategoryPage> {
         actions: const [
           Padding(
             padding: EdgeInsets.only(right: 18.0),
-            child: Icon(Icons.menu,color: Colors.black,),
+            child: Icon(
+              Icons.menu,
+              color: Colors.black,
+            ),
           )
         ],
       ),
@@ -85,7 +88,7 @@ class _CategoryPageState extends State<CategoryPage> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Container(
-              padding:const  EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.only(top: 20),
               height: 490,
               // color: Colors.yellow,
               child: GamesCategory(
