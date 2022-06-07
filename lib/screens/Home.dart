@@ -158,7 +158,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               }),
         ),
         Tranding(
-
           moreButtonClick: moreButtonClick,
         ),
         BottomNews(
