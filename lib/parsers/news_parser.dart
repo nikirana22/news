@@ -2,8 +2,6 @@ import '../entity/dao_data.dart';
 import '../providers/news.dart';
 
 class NewsParser {
-  // static Dao? datadao;
-  // static DataDao? dao;
   static const String authorKey = 'author';
   static const String title = 'title';
   static const String description = 'description';
@@ -27,19 +25,16 @@ class NewsParser {
     return articlesList.map((e) => parseNews(e)).toList();
   }
 
-  static Articles change(List<DataDao> list) {
-    Articles articles = Articles();
-    articles.setNewsList = list.map((e) {
-      News news = News(
-          author: e.author,
-          title: e.title,
-          description: e.description,
-          url: e.url,
-          urlToImage: e.urlToImage,
-          publishedAt: e.publishedAt,
-          content: e.content);
-      return news;
-    }).toList();
-    return articles;
+  static List<News> change(List<DataDao> list) {
+    return list
+        .map((e) => News(
+            author: e.author,
+            title: e.title,
+            description: e.description,
+            url: e.url,
+            urlToImage: e.urlToImage,
+            publishedAt: e.publishedAt,
+            content: e.content))
+        .toList();
   }
 }

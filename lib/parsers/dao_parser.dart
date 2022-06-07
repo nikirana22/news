@@ -19,10 +19,4 @@ class DaoParser {
         publishedAt: map[_publishedAt],
         content: map[_content]);
   }
-// static MyList sendList(List list){
-//   MyList myList=MyList();
-//   myList.ourList=list.map((e) => sendData(e).toList());
-//   return
-// }
-
 }

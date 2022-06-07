@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -43,6 +43,7 @@ class News {
 }
 
 class Articles with ChangeNotifier {
+  //TOdo can we make this class singleton
   static const String _apiKey = 'a76eab3a9db6401986b50fc441c1ce56';
   static const String _baseurl = 'https://newsapi.org/v2/top-headlines';
 
@@ -58,9 +59,16 @@ class Articles with ChangeNotifier {
 
   Future<void> fetchArticlesForCategory(String category) async {
     Dio dio = Dio();
-    Response response = await dio.get(getUrlForCategory(category));
-    Map<String, dynamic> map = json.decode(response.data);
-    setArticles(NewsParser.parseArticles(map['articles']));
+    try {
+      Response response = await dio.get(getUrlForCategory(category));
+      Map map = response.data;
+      setArticles(NewsParser.parseArticles(map['articles']));
+    } on SocketException  {
+      print('Something is wrong with internet');
+    } catch (error) {
+      rethrow;
+    }
+
   }
 
   void setArticles(List<News> newsList) {

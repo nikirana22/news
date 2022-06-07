@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:news/widgets/news_details_appbar.dart';
 
 import '../providers/news.dart';
-import '../../widgets/SecondCont.dart';
+import '../../widgets/details_news_title.dart';
 
 class NewsDetails extends StatelessWidget {
   static const String routeName = '/details';
@@ -67,7 +68,7 @@ class NewsDetails extends StatelessWidget {
                 ],
               ),
             ),
-            bottom: AppBarCustom(),
+            bottom: NewsDetailsAppBar(),
           ),
           SliverList(
             delegate: SliverChildListDelegate([
@@ -80,20 +81,6 @@ class NewsDetails extends StatelessWidget {
                           topLeft: Radius.circular(30))),
                   child: Column(
                     children: [
-                      // Text(
-                      //   data.title.toString(),
-                      //   style: Theme.of(context).textTheme.headline1,
-                      // ),
-                      // Text(
-                      //   data.title.toString(),
-                      //   style: Theme.of(context).textTheme.headline2,
-                      // ),
-                      // Text(
-                      //   data.title.toString(),
-                      //   style: Theme.of(context).textTheme.headline3,
-                      // ),
-                      // Text('hello everyone'),
-                      //
                       DetailsNewsTitle(
                         titleData: data.title.toString(),
                         textStyle: Theme.of(context).textTheme.headline1,
@@ -106,65 +93,10 @@ class NewsDetails extends StatelessWidget {
                         titleData: data.content.toString(),
                         textStyle: Theme.of(context).textTheme.headline3,
                       ),
-                      //
-                      // DetailsNewsTitle(data.description.toString(),
-                      //     Theme.of(context).textTheme.headline2),
-                      // DetailsNewsTitle(data.content.toString(),
-                      //     Theme.of(context).textTheme.headline3),
                     ],
                   )),
             ]),
           )
         ]));
   }
-}
-
-class AppBarCustom extends StatelessWidget with PreferredSizeWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-      height: 60,
-      padding: const EdgeInsets.symmetric(horizontal: 35),
-      // margin: const EdgeInsets.symmetric(horizontal: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: Colors.black,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
-          Icon(
-            Icons.facebook,
-            size: 15,
-            color: Colors.white60,
-          ),
-          Icon(
-            Icons.whatsapp,
-            color: Colors.white60,
-            size: 15,
-          ),
-          Icon(
-            Icons.email,
-            color: Colors.white60,
-            size: 15,
-          ),
-          Icon(
-            Icons.share,
-            color: Colors.white60,
-            size: 15,
-          ),
-          Icon(
-            Icons.favorite,
-            size: 15,
-            color: Colors.white60,
-          )
-        ],
-      ),
-    );
-  }
-
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => Size.fromHeight(80);
 }

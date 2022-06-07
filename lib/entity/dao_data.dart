@@ -3,7 +3,7 @@ import 'package:floor/floor.dart';
 
 @Entity(tableName: 'apidata')
 class DataDao {
-  @primaryKey
+  @PrimaryKey(autoGenerate: true)
   int? id;
   String? author;
   String? title;

@@ -19,7 +19,7 @@ class BottomNews extends StatelessWidget {
         ),
         padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
         width: double.infinity,
-        height: 228,
+        height: 238,
         child: ListView.builder(
             itemCount: articles.length,
             itemBuilder: (context, index) {

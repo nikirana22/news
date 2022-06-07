@@ -82,7 +82,7 @@ class _$DaoDatabase extends DaoDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `apidata` (`id` INTEGER, `author` TEXT, `title` TEXT, `description` TEXT, `url` TEXT, `urlToImage` TEXT, `publishedAt` TEXT, `content` TEXT, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `apidata` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `author` TEXT, `title` TEXT, `description` TEXT, `url` TEXT, `urlToImage` TEXT, `publishedAt` TEXT, `content` TEXT)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -132,6 +132,11 @@ class _$Dao extends Dao {
             urlToImage: row['urlToImage'] as String?,
             publishedAt: row['publishedAt'] as String?,
             content: row['content'] as String?));
+  }
+
+  @override
+  Future<void> clearDb() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM apidata');
   }
 
   @override

@@ -10,4 +10,7 @@ abstract class Dao {
 
   @Query('SELECT * FROM apidata')
   Future<List<DataDao>> getData();
+
+  @Query('DELETE FROM apidata')
+  Future<void> clearDb();
 }
