@@ -23,31 +23,20 @@ class News {
       required this.publishedAt,
       required this.content});
 
-  @override
-  String toString() {
-    // TODO: implement toString
-    return 'author : $author ,title : $title, description : $description , url: $url';
-  }
-
-  Map<String, Object> toMap() {
-    return {
-      NewsParser.authorKey: (author ?? ''),
-      NewsParser.title: (title ?? ''),
-      NewsParser.description: (description ?? ''),
-      NewsParser.url: (url ?? ''),
-      NewsParser.urlToImage: (urlToImage ?? ''),
-      NewsParser.publishedAt: (publishedAt ?? ''),
-      NewsParser.content: (content ?? ''),
-    };
-  }
 }
 
 class Articles with ChangeNotifier {
-  //TOdo can we make this class singleton
   static const String _apiKey = 'a76eab3a9db6401986b50fc441c1ce56';
   static const String _baseurl = 'https://newsapi.org/v2/top-headlines';
-
   List<News> _newsList = [];
+
+  static const List<String> categoryList = [
+    'science',
+    'business',
+    'sports',
+  ];
+
+  String category = categoryList[0];
 
   List<News> get newsList {
     return [..._newsList];
@@ -57,18 +46,18 @@ class Articles with ChangeNotifier {
     _newsList = newsList;
   }
 
-  Future<void> fetchArticlesForCategory(String category) async {
+  Future<void> fetchArticlesForCategory() async {
     Dio dio = Dio();
     try {
       Response response = await dio.get(getUrlForCategory(category));
-      Map map = response.data;
-      setArticles(NewsParser.parseArticles(map['articles']));
-    } on SocketException  {
+      Map<String, Object> map = response.data;
+      setArticles(NewsParser.parseArticles(map['articles'] as List));
+    } on SocketException {
       print('Something is wrong with internet');
     } catch (error) {
+      print('catch statement');
       rethrow;
     }
-
   }
 
   void setArticles(List<News> newsList) {
@@ -78,5 +67,10 @@ class Articles with ChangeNotifier {
 
   String getUrlForCategory(String category) {
     return '$_baseurl?country=us&category=$category&apiKey=$_apiKey';
+  }
+
+  void categoryChangeButtonClick(int index) {
+    category = categoryList[index];
+    notifyListeners();
   }
 }

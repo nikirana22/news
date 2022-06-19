@@ -1,3 +1,4 @@
+
 import '../entity/dao_data.dart';
 import '../providers/news.dart';
 
@@ -11,12 +12,15 @@ class NewsParser {
   static const String content = 'content';
 
   static News parseNews(Map<String, Object> jsonMap) {
+    // String imageurl=
     return News(
         author: jsonMap[authorKey] as String,
         title: jsonMap[title] as String,
         description: jsonMap[description] as String,
         url: jsonMap[url] as String,
-        urlToImage: jsonMap[urlToImage] as String,
+        urlToImage: jsonMap[urlToImage] == null
+            ? 'https://cdn.vectorstock.com/i/1000x1000/35/52/placeholder-rgb-color-icon-vector-32173552.webp'
+            : jsonMap[urlToImage] as String,
         publishedAt: jsonMap[publishedAt] as String,
         content: jsonMap[content] as String);
   }

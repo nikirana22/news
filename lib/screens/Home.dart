@@ -1,231 +1,173 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:news/widgets/app_bar.dart';
+import '../providers/database_provider.dart';
 import 'package:provider/provider.dart';
-import '../dao/dao.dart';
-import '../database/dao_database.dart';
-import '../entity/dao_data.dart';
-import '../parsers/news_parser.dart';
 import '../providers/news.dart';
 import '../widgets/bottom_news.dart';
-import '../widgets/news_daat.dart';
+import '../widgets/top_news.dart';
 import '../widgets/tranding.dart';
-import 'detail_screen.dart';
 
-//TODO : what is the diff between provider.of() and
-
+//TODO : what is the diff between provider.of() an
 class Home extends StatefulWidget {
   static const String login = "/login";
+
   @override
   State<Home> createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> with WidgetsBindingObserver {
-  var _isLoading = true;
-  List<News>? _articles = [];
-  // Future<bool> hasNetwork() async {
-  //   try {
-  //     final result = await InternetAddress.lookup('example.com');
-  //     return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
-  //   } on SocketException catch (_) {
-  //     return false;
-  //   }
-  // }
-  // late DaoDatabase _data;
-  // Dao? _dao;
+  List<News> _newList = [];
+  late bool _isOnline;
 
-  static const List<String> _categoryList = [
-    'science',
-    'business',
-    'sports',
-  ];
-
-  String _category = _categoryList[0];
-
-//https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=a76eab3a9db6401986b50fc441c1ce56
+  //https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=a76eab3a9db6401986b50fc441c1ce56
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     WidgetsBinding.instance?.addObserver(this);
-    initArticles();
+    fetchData();
+  }
+
+  void fetchData() async {
+    // var connectivityCheck = await ConnectivityProvider.getConnectivity();
+    var connectivityCheck=await Connectivity().checkConnectivity(); // todo we don't need ConnectivityProvider if we do this
+    if (connectivityCheck == ConnectivityResult.wifi ||
+        connectivityCheck == ConnectivityResult.mobile) {
+      Articles articles = Provider.of<Articles>(context, listen: false);
+      await articles.fetchArticlesForCategory();
+      setState(() {
+        _newList = articles.newsList;
+        _isOnline=true;
+      });
+    } else if(connectivityCheck==ConnectivityResult.none){/*if db has items*/
+      DatabaseProvider databaseProvider=Provider.of<DatabaseProvider>(context,listen: false);
+      await databaseProvider.getDataFromDatabase();
+      setState(() {
+        _newList=databaseProvider.articlesDatabase;
+        _isOnline=false;
+      });
+    }
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.paused) {
-      //clear db first
-      clearAndUpdateDB();
+      databaseAdded();
     }
   }
-
   @override
   Widget build(BuildContext context) {
-    //todo data is increasing in database on every paused
-    // todo database design in flutter
 
+    //todo image server error 503 (server is temporarily unable to handle the request)
     return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-          backgroundColor: Colors.black,
-          appBar: Appbar(categoryChangeButtonClick: categoryChangeButtonClick,categoryList: _categoryList,),
-          body:
-          // _isLoading
-          //     ?
-              // ?databaseDataInWidget():
-              //  const Center(child: CircularProgressIndicator())
-              // :
-          StreamBuilder(
-                  stream: Connectivity().onConnectivityChanged,
-                  builder: (context, snapshot) {
-                    print(snapshot.data);
-                    if (snapshot.data == ConnectivityResult.wifi ||
-                        snapshot.data == ConnectivityResult.mobile) {
-                      print('if statement yes ');
-                      return buildHomeScreen();
-                    }
-                    else if(snapshot.data==ConnectivityResult.none){
-                      checkData();
-                      print('else statement my ');
-
-                      return buildHomeScreen();
-                      // return Text('else statement',style: TextStyle(color: Colors.white),);
-                    }
-                    else if(snapshot.data==null){
-                      checkData();
-                      return buildHomeScreen();
-                    }
-                    //Check if there is no data for the category in db as well then show no internet msg
-                    else{
-                      return const Text('else statement something is going wrong');
-                    }
+        length: 3,
+        child: Scaffold(
+            backgroundColor: Colors.black,
+            appBar: AppBar(
+                backgroundColor: Colors.white,
+                elevation: 0,
+                leading: const Padding(
+                    padding: EdgeInsets.only(top: 4, left: 10),
+                    child: Icon(
+                      Icons.menu,
+                      color: Colors.black,
+                    )),
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 15),
+                    child: IconButton(
+                        onPressed: () {},
+                        icon: const Icon(
+                          Icons.supervised_user_circle,
+                          color: Colors.grey,
+                          size: 35,
+                        )),
+                  ),
+                ],
+                bottom: TabBar(
+                  labelStyle: const TextStyle(fontSize: 25),
+                  unselectedLabelStyle: const TextStyle(fontSize: 15),
+                  tabs: [
+                    Tab(text: Articles.categoryList[0].toString()),
+                    Tab(text: Articles.categoryList[1].toString()),
+                    Tab(text: Articles.categoryList[2].toString()),
+                  ],
+                  onTap: (index) {
+                    onCategoryChange(index);
                   },
+                  labelColor: const Color.fromRGBO(182, 105, 122, 1),
+                  indicatorColor: const Color.fromRGBO(182, 105, 122, 1),
+                  unselectedLabelColor: Colors.black26,
                 )),
-    );
+            body: buildHomeScreen()));
   }
 
-  Future<void> clearAndUpdateDB() async {
-    await deleteDb();
-    databaseDataAdded();
+  Widget buildHomeScreen( ) {
+    return _newList.isNotEmpty
+        ? Column(
+            children: [
+              Container(
+                color: Colors.white,
+                padding: const EdgeInsets.only(top: 10),
+                height: 200,
+                width: double.infinity,
+                child: Swiper(
+                    controller: SwiperController(),
+                    //TODO find out on and off logic
+                    loop: false,
+                    scale: 0.85,
+                    viewportFraction: 0.8,
+                    itemCount: _newList.length,
+                    itemBuilder: (_, index) {
+                      if (_newList[index].urlToImage != null) {
+                        return TopNews(
+                          newsData: _newList[index],
+                          isOnline: _isOnline,
+                          // connectivityResult: connection,
+                          index: index,
+                        );
+                      } else {
+                        return Container(
+                            height: 150,
+                            margin: const EdgeInsets.only(bottom: 5),
+                            color: Colors.purpleAccent,
+                            child: const Text('No..............'));
+                      }
+                    }),
+              ),
+              Tranding(),
+              BottomNews(
+                isOnline: _isOnline,
+                articles: _newList,
+              ),
+            ],
+          )
+        : const CircularProgressIndicator();
   }
-
-  void databaseDataAdded() async {
-    Dao dao = await getDao();
-    print('----------------------------------------------------------');
-    _articles?.forEach((e) {
-      dao.addData(DataDao(
-          author: e.author,
-          title: e.title,
-          description: e.description,
-          url: e.url,
-          urlToImage: e.urlToImage,
-          publishedAt: e.publishedAt,
-          content: e.content));
-      print('data is adding }');
-    });
-  }
-
-  Widget buildHomeScreen() {
-    return _articles!.isNotEmpty? Column(
-      children: [
-        Container(
-          color: Colors.white,
-          padding: const EdgeInsets.only(top: 20),
-          height: 210,
-          width: double.infinity,
-          child: Swiper(
-              controller: SwiperController(),
-              //TODO find out on and off logic
-              loop: false,
-              scale: 0.85,
-              viewportFraction: 0.8,
-              itemCount: _articles?.length,
-              itemBuilder: (_, index) {
-                if (_articles![index].urlToImage != null) {
-                  return NewsData(
-                    author: _articles![index].author.toString(),
-                    index: index,
-                    image: _articles![index].urlToImage!,
-                    title: _articles![index].title!,
-                    imageClick: gotoDetailsPage,
-                  );
-                } else {
-                  return const Text('No..............');
-                }
-              }),
-        ),
-        Tranding(
-          moreButtonClick: moreButtonClick,
-        ),
-        BottomNews(
-          articles: _articles!,
-        ),
-      ],
-    ):CircularProgressIndicator();
-  }
-
-  void getDataa() async {
-    Dao dao = await getDao();
-    List<DataDao> list = await dao.getData();
-    print(list);
-    print('database data is getting ${list.length}');
-  }
-  void checkData() async {
-    Dao dao = await getDao();
-    List<DataDao> list = await dao.getData();
-    print(list);
-    if(list.isEmpty){
-      print('No data found');
-    }
-    else{
-    setState(() {
-      _articles = NewsParser.change(list);
-    });
-    // databaseDataAdded();
+  void fatchApiData(Articles articles) async {
+    if (articles.newsList.isEmpty) {
+      await articles.fetchArticlesForCategory();
+      setState(() {
+        _newList = articles.newsList;
+      });
     }
   }
-  Future<void> deleteDb() async {
-    Dao dao = await getDao();
-    dao.clearDb();
-  }
 
-  Future<Dao> getDao() async {
-    DaoDatabase database =
-        await $FloorDaoDatabase.databaseBuilder('apidata').build();
-    Dao dao = database.datadao;
-    return dao;
-  }
+  void onCategoryChange(int index)async{
+    Articles articles=Provider.of<Articles>(context,listen: false);
+    articles.categoryChangeButtonClick(index);
 
-  void moreButtonClick() {
-    print('clicked');
-    getDataa();
-    // checkData();
-  }
-
-  void categoryChangeButtonClick(int index) {
+    await articles.fetchArticlesForCategory();
     setState(() {
-      _category = _categoryList[index];
-      initArticles();
+      _newList=articles.newsList;
     });
   }
-
-  Future<void> initArticles() async {
-    // setState(() {
-    //   _isLoading = true;
-    // });
-    final provider = Provider.of<Articles>(context, listen: false);
-    await provider.fetchArticlesForCategory(_category);
-    setState(() {
-      _isLoading = false;
-      _articles = provider.newsList;
-    });
-  }
-
-  void gotoDetailsPage(int index, BuildContext context) {
-    Navigator.pushNamed(context, NewsDetails.routeName,
-        arguments: _articles![index]);
+  void databaseAdded() {
+    DatabaseProvider databaseProvider =
+        Provider.of<DatabaseProvider>(context, listen: false);
+    databaseProvider.databaseDataAdded(_newList);
   }
 }

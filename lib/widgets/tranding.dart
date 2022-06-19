@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Tranding extends StatelessWidget {
-  Tranding({required this.moreButtonClick,Key? key}) : super(key: key);
 
-  VoidCallback moreButtonClick;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +20,7 @@ class Tranding extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: moreButtonClick,
+            onPressed: (){},
             child: const Text(
               'More',
               style: TextStyle(color: Colors.white),

@@ -1,11 +1,16 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
-
 import '../providers/news.dart';
 
 class BottomNews extends StatelessWidget {
   List<News> articles;
+  bool isOnline;
 
-  BottomNews({Key? key, required this.articles}) : super(key: key);
+  BottomNews(
+      {Key? key, required this.articles,
+        required this.isOnline,
+      })
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -30,16 +35,20 @@ class BottomNews extends StatelessWidget {
                     children: [
                       ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                          child: articles[index].urlToImage != null
-                              ? Image.network(
-                                  articles[index].urlToImage.toString(),
-                                  width: 70,
-                                  height: 70,
-                                  fit: BoxFit.fill)
-                              : const SizedBox(
-                                  height: 70,
-                                  width: 70,
-                                )),
+                  //todo check this ---------->how can we solve null url
+                  child:isOnline==true?
+                             Image.network(
+                                      articles[index].urlToImage.toString(),
+                                      width: 70,
+                                      height: 70,
+                                      fit: BoxFit.fill)
+                                  : Image.file(
+                                      File(
+                                          articles[index].urlToImage.toString()),
+                                      width: 70,
+                                      height: 70,
+                                      fit: BoxFit.fill)
+                              ),
                       Column(
                         children: [
                           SizedBox(

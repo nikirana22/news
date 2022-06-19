@@ -1,13 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:news/widgets/news_details_appbar.dart';
 
 import '../providers/news.dart';
-import '../../widgets/details_news_title.dart';
 
 class NewsDetails extends StatelessWidget {
   static const String routeName = '/details';
 
-  const NewsDetails({Key? key}) : super(key: key);
+  NewsDetails({Key? key, required this.isOnline}) : super(key: key);
+  bool? isOnline;
 
   @override
   Widget build(BuildContext context) {
@@ -39,16 +41,21 @@ class NewsDetails extends StatelessWidget {
                   padding: EdgeInsets.only(right: 30),
                   child: Icon(Icons.bookmark))
             ],
-            // backgroundColor: Colors.black,
             expandedHeight: 290,
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
                 children: [
-                  Image.network(
-                    data.urlToImage.toString(),
-                    fit: BoxFit.fitHeight,
-                    height: 310,
-                  ),
+                  isOnline == true
+                      ? Image.network(
+                          data.urlToImage.toString(),
+                          fit: BoxFit.fitHeight,
+                          height: 310,
+                        )
+                      : Image.file(
+                          File(data.urlToImage.toString()),
+                          height: 310,
+                          fit: BoxFit.fitHeight,
+                        ),
                   Positioned(
                       top: 140,
                       left: 30,
@@ -81,22 +88,25 @@ class NewsDetails extends StatelessWidget {
                           topLeft: Radius.circular(30))),
                   child: Column(
                     children: [
-                      DetailsNewsTitle(
-                        titleData: data.title.toString(),
-                        textStyle: Theme.of(context).textTheme.headline1,
-                      ),
-                      DetailsNewsTitle(
-                        titleData: data.description.toString(),
-                        textStyle: Theme.of(context).textTheme.headline2,
-                      ),
-                      DetailsNewsTitle(
-                        titleData: data.content.toString(),
-                        textStyle: Theme.of(context).textTheme.headline3,
-                      ),
+                      newsContent(data.title.toString().toString(),
+                          Theme.of(context).textTheme.headline1),
+                      newsContent(data.description.toString().toString(),
+                          Theme.of(context).textTheme.headline2),
+                      newsContent(data.content.toString().toString(),
+                          Theme.of(context).textTheme.headline3),
                     ],
                   )),
             ]),
           )
         ]));
+  }
+
+  Widget newsContent(String text, TextStyle? style) {
+    return Padding(
+        padding: const EdgeInsets.all(20),
+        child: Text(
+          text,
+          style: style,
+        ));
   }
 }

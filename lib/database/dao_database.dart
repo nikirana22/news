@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:isolate';
 
 import 'package:floor/floor.dart';
 import 'package:news/dao/dao.dart';
