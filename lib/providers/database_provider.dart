@@ -7,11 +7,10 @@ import '../entity/dao_data.dart';
 import '../parsers/news_parser.dart';
 import '../providers/news.dart';
 
-//TODO why this is notifier
-//todo why i'm checking connectivity check there
+
 class DatabaseProvider with ChangeNotifier {
   List<News> _articlesDatabae = [];
-  CacheManager _cacheManager = DefaultCacheManager();
+  final CacheManager _cacheManager = DefaultCacheManager();
   File? imageFile;
 
   List<News> get articlesDatabase {

@@ -24,15 +24,13 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance?.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
     fetchData();
   }
 
   void fetchData() async {
-    // var connectivityCheck = await ConnectivityProvider.getConnectivity();
-    var connectivityCheck=await Connectivity().checkConnectivity(); // todo we don't need ConnectivityProvider if we do this
+    var connectivityCheck=await Connectivity().checkConnectivity();
     if (connectivityCheck == ConnectivityResult.wifi ||
         connectivityCheck == ConnectivityResult.mobile) {
       Articles articles = Provider.of<Articles>(context, listen: false);
@@ -61,7 +59,6 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
 
-    //todo image server error 503 (server is temporarily unable to handle the request)
     return DefaultTabController(
         length: 3,
         child: Scaffold(

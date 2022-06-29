@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:news/helpers/page_change_helper.dart';
-import 'package:news/providers/connectivity_provider.dart';
-import 'package:news/providers/database_provider.dart';
-import 'package:news/providers/news.dart';
 import 'package:provider/provider.dart';
-import 'screens/detail_screen.dart';
+import '../helpers/page_change_helper.dart';
+import '../providers/database_provider.dart';
+import '../providers/news.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
 
   //TODO diff b/w ChangeNotifierProvider.value & ChangeNotifierProvider
   runApp(MultiProvider(
@@ -19,9 +16,6 @@ void main() async {
         ChangeNotifierProvider.value(value: DatabaseProvider()),
       ],
       child: MaterialApp(
-        routes: {
-          // NewsDetails.routeName: (context) =>  NewsDetails(isOnline: i,),
-        },
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -43,20 +37,12 @@ void main() async {
       )));
 }
 
-class _MyHomePage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return _MyHomePageState();
-  }
-}
-
-class _MyHomePageState extends State<_MyHomePage> {
+class _MyHomePage extends StatelessWidget {
 
 
   @override
   Widget build(BuildContext context) {
     PageChangeHelper changePages = Provider.of<PageChangeHelper>(context);
-
     return Scaffold(
         backgroundColor: Colors.black,
         body:
@@ -82,14 +68,6 @@ class _MyHomePageState extends State<_MyHomePage> {
           ],
         ));
   }
-// void loginButton(String email, String password) {
-//   print(email);
-//   if (email.isNotEmpty && password.isNotEmpty) {
-//     Navigator.pushReplacementNamed(context, Home.login);
-//     Navigator.pushNamed(context, Home.login,
-//         arguments: {'email': email, 'pass': password});
-//   }
-// }
 
 }
 //TODO 5/6/2022:What is Future?

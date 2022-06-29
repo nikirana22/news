@@ -1,9 +1,14 @@
 import 'dart:io';
+import 'dart:js';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../parsers/news_parser.dart';
+import 'database_provider.dart';
 
 class News {
   String? author;
@@ -29,6 +34,8 @@ class Articles with ChangeNotifier {
   static const String _apiKey = 'a76eab3a9db6401986b50fc441c1ce56';
   static const String _baseurl = 'https://newsapi.org/v2/top-headlines';
   List<News> _newsList = [];
+
+  bool? _isOnline;
 
   static const List<String> categoryList = [
     'science',
@@ -73,4 +80,22 @@ class Articles with ChangeNotifier {
     category = categoryList[index];
     notifyListeners();
   }
+
+  //
+  // List<News> connectivityCheck(BuildContext context)async {
+  //   DatabaseProvider databaseProvider=Provider.of<DatabaseProvider>(context,listen: false);
+  //   var connectivityCheck=await Connectivity().checkConnectivity();
+  //   if (connectivityCheck == ConnectivityResult.wifi ||
+  //       connectivityCheck == ConnectivityResult.mobile) {
+  //     await fetchArticlesForCategory();
+  //       return newsList;
+  //   } else if(connectivityCheck==ConnectivityResult.none){/*if db has items*/
+  //     await databaseProvider.getDataFromDatabase();
+  //       _newList=databaseProvider.articlesDatabase;
+  //       _isOnline=false;
+  //     });
+  //   }
+  //
+  // }
+
 }
