@@ -1,12 +1,9 @@
 import 'dart:io';
-import 'dart:js';
-
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../parsers/news_parser.dart';
 import 'database_provider.dart';
 
@@ -69,7 +66,7 @@ class Articles with ChangeNotifier {
 
   void setArticles(List<News> newsList) {
     _newsList = newsList;
-    notifyListeners();
+    // notifyListeners();
   }
 
   String getUrlForCategory(String category) {
@@ -78,16 +75,16 @@ class Articles with ChangeNotifier {
 
   void categoryChangeButtonClick(int index) {
     category = categoryList[index];
-    notifyListeners();
+    // notifyListeners();
   }
 
-  //
   // List<News> connectivityCheck(BuildContext context)async {
   //   DatabaseProvider databaseProvider=Provider.of<DatabaseProvider>(context,listen: false);
   //   var connectivityCheck=await Connectivity().checkConnectivity();
   //   if (connectivityCheck == ConnectivityResult.wifi ||
   //       connectivityCheck == ConnectivityResult.mobile) {
   //     await fetchArticlesForCategory();
+  //     newsList=
   //       return newsList;
   //   } else if(connectivityCheck==ConnectivityResult.none){/*if db has items*/
   //     await databaseProvider.getDataFromDatabase();
@@ -97,5 +94,28 @@ class Articles with ChangeNotifier {
   //   }
   //
   // }
+  Future<List<News>> fetchData(BuildContext context) async {//todo is this correct
+    var connectivityCheck=await Connectivity().checkConnectivity();
+    if (connectivityCheck == ConnectivityResult.wifi ||
+        connectivityCheck == ConnectivityResult.mobile) {
+      Articles articles = Provider.of<Articles>(context, listen: false);
+      await articles.fetchArticlesForCategory();
+      // setState(() {
+        return articles.newsList;
+        _isOnline=true;
+      // });
+    } else if(connectivityCheck==ConnectivityResult.none){/*if db has items*/
+      DatabaseProvider databaseProvider=Provider.of<DatabaseProvider>(context,listen: false);
+      await databaseProvider.getDataFromDatabase();
+      // setState(() {
+        return databaseProvider.articlesDatabase;
+        _isOnline=false;
+      // });
+    }
+    else{
+      return [];
+    }
+  }
+
 
 }

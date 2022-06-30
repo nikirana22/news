@@ -4,31 +4,34 @@ import '../providers/news.dart';
 import '../screens/detail_screen.dart';
 
 class TopNews extends StatelessWidget {
-  int index;
+  // int index;
 
-  News newsData;
-  bool isOnline;
+  final News newsData;
+  final bool isOnline;
 
-  TopNews({
+  const TopNews({
     Key? key,
     required this.isOnline,
     required this.newsData,
-    required this.index,
+    // required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Size size =MediaQuery.of(context).size;
+    double height=size.height;
+    double width =size.width;
     return Column(
       children: [
         InkWell(
-          onTap: () => gotoDetailsPage(index, context),
+          onTap: () => gotoDetailsPage(/*index,*/ context),
           child: Stack(
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(30),
-                  child: isOnline == true
+                  child: isOnline
                       ? FadeInImage(
-                          height: 190,
+                          height: height*0.26,
                           fit: BoxFit.fill,
                           placeholder: const AssetImage('placeholder.png'),
                           image: NetworkImage(newsData.urlToImage.toString()),
@@ -40,7 +43,7 @@ class TopNews extends StatelessWidget {
                       //         fit: BoxFit.fill,
                       //       )
                       : FadeInImage(
-                    height: 190,
+                    height: height*0.26,
                     fit: BoxFit.fill,
 
                       placeholder:const AssetImage('placeholder.png') ,
@@ -50,34 +53,35 @@ class TopNews extends StatelessWidget {
 
                   ),
               Positioned(
-                  top: 40,
-                  left: 170,
+                  top: height*0.05,
+                  right: width*0.08,
                   child: Text(
                     newsData.author.toString(),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(fontSize: 15, color: Colors.white),
                   )),
-              const Positioned(
-                  top: 110,
+              Positioned(
+                  top: height*0.15,
                   left: 20,
                   child: SizedBox(
-                    width: 250,
+                    width: width*0.7,
                     child: Text(
-                      'this is text that im using to check the content',
-                      style: TextStyle(fontSize: 23, color: Colors.white),
+                      newsData.title.toString(),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style:const TextStyle(fontSize: 23, color: Colors.white),
                     ),
                   ))
             ],
           ),
         ),
-        //TODO 5/6/2022: How to achieve ellipse text behavior & what is overflow property?
-        //TODO 5/6/2022: Try using FittedBox
+
       ],
     );
   }
 
-  void gotoDetailsPage(int index, BuildContext context) {
+  void gotoDetailsPage(/*int index,*/ BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (_){
       return NewsDetails(isOnline: isOnline);
     },settings: RouteSettings(name: 'send',arguments:newsData,)));
