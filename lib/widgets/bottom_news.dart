@@ -6,14 +6,17 @@ class BottomNews extends StatelessWidget {
   List<News> articles;
   bool isOnline;
 
-  BottomNews(
-      {Key? key, required this.articles,
-        required this.isOnline,
-      })
-      : super(key: key);
+  BottomNews({
+    Key? key,
+    required this.articles,
+    required this.isOnline,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    double height = size.height;
+    double width = size.width;
     return Container(
         decoration: const BoxDecoration(
           color: Colors.white,
@@ -22,54 +25,67 @@ class BottomNews extends StatelessWidget {
             bottomRight: Radius.circular(40),
           ),
         ),
-        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 15),
+        padding:
+            const EdgeInsets.only(left: 20, right: 20, bottom: 15, top: 10),
         width: double.infinity,
-        height: 238,
+        height: height * 0.35,
         child: ListView.builder(
             itemCount: articles.length,
             itemBuilder: (context, index) {
               return Container(
+                  // color: Colors.deepPurpleAccent,
+                  height: height * 0.1,
+
                   margin: const EdgeInsets.only(bottom: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       ClipRRect(
                           borderRadius: BorderRadius.circular(8),
-                  //todo check this ---------->how can we solve null url
-                  child:isOnline==true?
-                             Image.network(
-                                      articles[index].urlToImage.toString(),
-                                      width: 70,
-                                      height: 70,
-                                      fit: BoxFit.fill)
-                                  : Image.file(
-                                      File(
-                                          articles[index].urlToImage.toString()),
-                                      width: 70,
-                                      height: 70,
-                                      fit: BoxFit.fill)
-                              ),
-                      Column(
-                        children: [
-                          SizedBox(
-                              width: 200,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20, top: 2),
-                                child: Text(
-                                  articles[index].title.toString(),
-                                  maxLines: 2,
-                                  style: const TextStyle(fontSize: 15),
-                                ),
-                              )),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            articles[index].publishedAt.toString(),
-                            style: const TextStyle(fontSize: 7),
-                          ),
-                        ],
+                          child: isOnline == true
+                              ? Image.network(
+                                  articles[index].urlToImage.toString(),
+                                  width: width * 0.2,
+                                  height: height * 0.095,
+                                  fit: BoxFit.fill)
+                              : Image.file(
+                                  File(articles[index].urlToImage.toString()),
+                              width: width * 0.2,
+                              height: height * 0.095,
+                                  fit: BoxFit.fill)),
+                      Container(
+                        // color: Colors.yellow,
+                        height: height*0.1,
+                        width: width*0.66,
+                        alignment: Alignment.center,
+                        padding:const EdgeInsets.symmetric(horizontal: 3),
+
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+
+                          children: [
+                            SizedBox
+                              (
+                                width: width*0.8,
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 20, top: 2),
+                                  child: Text(
+                                    articles[index].title.toString(),
+                                    maxLines: 2,
+                                    style: const TextStyle(fontSize: 15),
+                                  ),
+                                )),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              articles[index].publishedAt.toString(),
+                              style: const TextStyle(fontSize: 7),
+                            ),
+                          ],
+                        ),
                       )
                     ],
                   ));

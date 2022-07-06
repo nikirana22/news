@@ -11,7 +11,8 @@ import '../providers/news.dart';
 class DatabaseProvider with ChangeNotifier {
   List<News> _articlesDatabae = [];
   final CacheManager _cacheManager = DefaultCacheManager();
-  File? imageFile;
+  // File? imageFile;
+
 
   List<News> get articlesDatabase {
     return [..._articlesDatabae];
@@ -45,13 +46,13 @@ class DatabaseProvider with ChangeNotifier {
     await clearAndUpdateDB();
     Dao dao = await getDao();
     for (News e in list) {
-      imageFile = await _cacheManager.getSingleFile(e.urlToImage.toString());
+      File imageFile = await _cacheManager.getSingleFile(e.urlToImage.toString());
       dao.addData(DataDao(
           author: e.author,
           title: e.title,
           description: e.description,
           url: e.url,
-          urlToImage: imageFile?.path,
+          urlToImage: imageFile.path,
           publishedAt: e.publishedAt,
           content: e.content));
     }

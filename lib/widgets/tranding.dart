@@ -5,10 +5,15 @@ class Tranding extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size=MediaQuery.of(context).size;
+    double height=size.height;
+    double width =size.width;
     return Container(
+
       padding: const EdgeInsets.symmetric(horizontal: 30),
-      height: 80,
+      height: height*0.1,
       color: Colors.white,
+      width: double.infinity,
       child: Row(
         children: [
           // Icon(Icons.point)

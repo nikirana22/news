@@ -27,6 +27,7 @@ class NewsParser {
 
   static List<News> parseArticles(List articlesList) {
     return articlesList.map((e) => parseNews(e)).toList();
+
   }
 
   static List<News> change(List<DataDao> list) {

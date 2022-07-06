@@ -1,8 +1,8 @@
 import 'dart:io';
-
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'package:news/widgets/news_details_appbar.dart';
-
+import '../providers/recently_watch_news.dart';
+import '../widgets/news_details_appbar.dart';
 import '../providers/news.dart';
 
 class NewsDetails extends StatelessWidget {
@@ -13,14 +13,13 @@ class NewsDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    News data = ModalRoute.of(context)?.settings.arguments as News;
-    //TODO 5/14/2022: Handle Orientation change
-    //TODO 5/14/2022: Expanded vs Flexible
-    //TODO 5/14/2022: Creating separate Widgets vs builder methods
-    //TODO 5/14/2022: LayoutBuilder
-    //TODO 5/14/2022: Animations in Flutter
-    //TODO 5/14/2022: Top 10 libraries in Flutter
-    //TODO 5/14/2022: Getting User Input
+    Map map = ModalRoute.of(context)?.settings.arguments as Map;
+    News data=map['data'];
+    int index=map['index'];
+
+    RecentlyWatchNews recentlyWatch=Provider.of<RecentlyWatchNews>(context,listen: false);
+    recentlyWatch.addRecentlyWatchNews(data);
+
     return Scaffold(
         backgroundColor: Colors.black12,
         body: CustomScrollView(slivers: [
@@ -36,10 +35,25 @@ class NewsDetails extends StatelessWidget {
             elevation: 5,
             pinned: true,
             backgroundColor: Colors.black,
-            actions: const [
+            actions: [
               Padding(
-                  padding: EdgeInsets.only(right: 30),
-                  child: Icon(Icons.bookmark))
+                  padding: const EdgeInsets.only(right: 30),
+                  child: Consumer<Articles>(
+                    builder: (_,articles,child){
+                      return IconButton(
+                        icon:
+                        // articles.newsList[index].isFavorite
+                        data.isFavorite
+                            ?const Icon(Icons.bookmark,color: Colors.red,):const Icon(Icons.bookmark,),
+                        onPressed: () {
+                          // articles.newsList[0].isFavorite=true;
+                          articles.addFavoriteNews(index);
+                          // articles.favoriteNews(index);
+                        },
+                      );
+                    },
+                  )
+              )
             ],
             expandedHeight: 290,
             flexibleSpace: FlexibleSpaceBar(

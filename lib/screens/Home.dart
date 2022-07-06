@@ -8,10 +8,8 @@ import '../widgets/top_news.dart';
 import '../widgets/tranding.dart';
 import '../providers/database_provider.dart';
 
-//TODO : what is the diff between provider.of() an
-
 class Home extends StatefulWidget {
-  static const String login = "/login";
+  // static const String login = "/login";
 
   @override
   State<Home> createState() => _HomeState();
@@ -20,7 +18,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with WidgetsBindingObserver {
   List<News> _newList = [];
   late bool _isOnline;
-
 
   //https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=a76eab3a9db6401986b50fc441c1ce56
 
@@ -33,22 +30,24 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
 
   void fetchData() async {
     //todo same in Articles(news class) Class
-    //todo is it wrong because we are using provider as well as StatefullWidget
-    var connectivityCheck=await Connectivity().checkConnectivity();
+    // todo i want to send this method in provider class. is it correct to check Connectivity() on UI
+    var connectivityCheck = await Connectivity().checkConnectivity();
     if (connectivityCheck == ConnectivityResult.wifi ||
         connectivityCheck == ConnectivityResult.mobile) {
       Articles articles = Provider.of<Articles>(context, listen: false);
       await articles.fetchArticlesForCategory();
       setState(() {
         _newList = articles.newsList;
-        _isOnline=true;
+        _isOnline = true;
       });
-    } else if(connectivityCheck==ConnectivityResult.none){/*if db has items*/
-      DatabaseProvider databaseProvider=Provider.of<DatabaseProvider>(context,listen: false);
+    } else if (connectivityCheck == ConnectivityResult.none) {
+      /*if db has items*/
+      DatabaseProvider databaseProvider =
+          Provider.of<DatabaseProvider>(context, listen: false);
       await databaseProvider.getDataFromDatabase();
       setState(() {
-        _newList=databaseProvider.articlesDatabase;
-        _isOnline=false;
+        _newList = databaseProvider.articlesDatabase;
+        _isOnline = false;
       });
     }
   }
@@ -57,32 +56,40 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.paused) {
-      databaseAdded();
+      Provider.of<DatabaseProvider>(context, listen: false)
+          .databaseDataAdded(_newList);
     }
   }
+  // void databaseAdded() {
+    // DatabaseProvider databaseProvider =
+
+    // databaseProvider.databaseDataAdded(_newList);
+  // }
+
+
   @override
   Widget build(BuildContext context) {
-    Size size=MediaQuery.of(context).size;
-    double height=size.height;
-    double width =size.width;
-
     return DefaultTabController(
         length: 3,
         child: Scaffold(
-            backgroundColor: Colors.yellow,
+            backgroundColor: Colors.black,
             appBar: homePageAppBar(),
-            body: buildHomeScreen(height,width)));
+            body:
+                SingleChildScrollView(child: buildHomeScreen())));
   }
-  Widget buildHomeScreen(double height,double width  ) {
+
+  Widget buildHomeScreen() {
+    Size size = MediaQuery.of(context).size;
+    double height = size.height;
+    double width = size.width;
+
     return _newList.isNotEmpty
         ? Column(
             children: [
               Container(
                 color: Colors.white,
                 padding: const EdgeInsets.only(top: 10),
-                // height: 200,
-                height: height*0.28,
-
+                height: height * 0.28,
                 width: double.infinity,
                 child: Swiper(
                     controller: SwiperController(),
@@ -95,11 +102,12 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                         return TopNews(
                           newsData: _newList[index],
                           isOnline: _isOnline,
-                          /*index: index,*/
+                          index: index,
                         );
                       } else {
                         return Container(
-                            height: 150,
+                            height: height * 0.26,
+                            width: width * 1,
                             margin: const EdgeInsets.only(bottom: 5),
                             color: Colors.purpleAccent,
                             child: const Text('No..............'));
@@ -113,33 +121,32 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               ),
             ],
           )
-        : const CircularProgressIndicator();
+        : const Center(
+            child: CircularProgressIndicator(
+            color: Colors.white,
+          ));
   }
-  void fatchApiData(Articles articles) async {
-    if (articles.newsList.isEmpty) {
-      await articles.fetchArticlesForCategory();
-      setState(() {
-        _newList = articles.newsList;
-      });
-    }
-  }
-  void onCategoryChange(int index)async{
-    Articles articles=Provider.of<Articles>(context,listen: false);
-    articles.categoryChangeButtonClick(index);
 
-    await articles.fetchArticlesForCategory();
+  // void fatchApiData(Articles articles) async {
+  //   if (articles.newsList.isEmpty) {
+  //     await articles.fetchArticlesForCategory();
+  //     setState(() {
+  //       _newList = articles.newsList;
+  //     });
+  //   }
+  // }
+
+  void onCategoryChange(int index) async {
+    Articles articles = Provider.of<Articles>(context, listen: false);
+    await articles.categoryChangeButtonClick(index);
+
+    // await articles.fetchArticlesForCategory();
     setState(() {
-      _newList=articles.newsList;
+      _newList = articles.newsList;
     });
   }
-  void databaseAdded() {
-    DatabaseProvider databaseProvider =
-        Provider.of<DatabaseProvider>(context, listen: false);
-    databaseProvider.databaseDataAdded(_newList);
-  }
 
-
-  PreferredSizeWidget homePageAppBar(){
+  PreferredSizeWidget homePageAppBar() {
     return AppBar(
         backgroundColor: Colors.white,
         elevation: 0,

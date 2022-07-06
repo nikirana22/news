@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../screens/favorite.dart';
+import '../providers/recently_watch_news.dart';
+import '../screens/recently_watch.dart';
 import '../screens/Home.dart';
-import '../helpers/page_change_helper.dart';
 import '../providers/database_provider.dart';
 import '../providers/news.dart';
 
@@ -10,11 +12,9 @@ void main() async {
 
   runApp(MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(
-          value: Articles(),
-        ),
-        ChangeNotifierProvider.value(value: PageChangeHelper()),
+        ChangeNotifierProvider.value(value: Articles(),),
         ChangeNotifierProvider.value(value: DatabaseProvider()),
+        ChangeNotifierProvider.value(value: RecentlyWatchNews())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -38,44 +38,55 @@ void main() async {
       )));
 }
 
-class _MyHomePage extends StatelessWidget {
+class _MyHomePage extends StatefulWidget {
+
+  @override
+  State<_MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<_MyHomePage> {
+  int _selectedPage=0;
 
   List<Widget> pageList = [
     Home(),
-    Container(
-      color: Colors.white60,
-    ),
-    Container(
-      color: Colors.purple,
-    ),
+    Favorite(),
+    RecentlyWatch(),
     Container(
       color: Colors.yellow,
     )];
 
   @override
   Widget build(BuildContext context) {
-    PageChangeHelper changePages = Provider.of<PageChangeHelper>(context);
+    // PageChangeHelper changePages = Provider.of<PageChangeHelper>(context);
     return Scaffold(
         backgroundColor: Colors.black,
-        body:
+        // body:Favorite(),
             // changePages.pages.pageList[changePages.pages.selectedPos],
-        pageList[changePages.selectedPos],
+        // body:pageList[changePages.selectedPos],
+        body:IndexedStack(
+          index: _selectedPage,
+          children: pageList,
+        ),
+        // body:RecentlyWatch(),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.white,
+            backgroundColor: Colors.black,
           unselectedItemColor: Colors.white60,
           onTap: (index) {
-            changePages.pagechanged(index);
+            setState((){
+              _selectedPage=index;
+            });
           },
-          currentIndex: changePages.selectedPos,
+          currentIndex: _selectedPage,
           items: const [
             BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
                 backgroundColor: Colors.black),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.notification_add), label: 'Notification'),
-            BottomNavigationBarItem(icon: Icon(Icons.save), label: "saved"),
-            BottomNavigationBarItem(icon: Icon(Icons.boy), label: "user")
+            BottomNavigationBarItem(backgroundColor: Colors.black,
+                icon: Icon(Icons.favorite), label: 'favorite'),
+            BottomNavigationBarItem(backgroundColor: Colors.black,icon: Icon(Icons.remove_red_eye), label: "recentlywatch"),
+            BottomNavigationBarItem(backgroundColor: Colors.black,icon: Icon(Icons.boy), label: "user")
           ],
         ));
   }
