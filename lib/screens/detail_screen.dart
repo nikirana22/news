@@ -7,18 +7,17 @@ import '../providers/news.dart';
 
 class NewsDetails extends StatelessWidget {
   static const String routeName = '/details';
+  bool? isOnline;
 
   NewsDetails({Key? key, required this.isOnline}) : super(key: key);
-  bool? isOnline;
 
   @override
   Widget build(BuildContext context) {
-    Map map = ModalRoute.of(context)?.settings.arguments as Map;
-    News data=map['data'];
-    int index=map['index'];
-
-    RecentlyWatchNews recentlyWatch=Provider.of<RecentlyWatchNews>(context,listen: false);
-    recentlyWatch.addRecentlyWatchNews(data);
+    News news = ModalRoute.of(context)?.settings.arguments as News;
+   // News data=map['data'];
+  //  int index=map['index'];
+    // RecentlyWatchNews recentlyWatch=Provider.of<RecentlyWatchNews>(context,listen: false);
+    // recentlyWatch.addRecentlyWatchNews(news);
 
     return Scaffold(
         backgroundColor: Colors.black12,
@@ -41,14 +40,19 @@ class NewsDetails extends StatelessWidget {
                   child: Consumer<Articles>(
                     builder: (_,articles,child){
                       return IconButton(
-                        icon:
-                        // articles.newsList[index].isFavorite
-                        data.isFavorite
+                        icon: news.isFavorite
                             ?const Icon(Icons.bookmark,color: Colors.red,):const Icon(Icons.bookmark,),
                         onPressed: () {
-                          // articles.newsList[0].isFavorite=true;
-                          articles.addFavoriteNews(index);
-                          // articles.favoriteNews(index);
+                          if(!news.isFavorite) {
+
+                            // articles.newsList[0].isFavorite=true;
+                            articles.addFavoriteNews(news);
+                            // articles.favoriteNews(index);
+                          }
+                          else{
+                            news.isFavorite=false;
+                            articles.removeFavoriteNews(news.id);
+                          }
                         },
                       );
                     },
@@ -61,12 +65,12 @@ class NewsDetails extends StatelessWidget {
                 children: [
                   isOnline == true
                       ? Image.network(
-                          data.urlToImage.toString(),
+                          news.urlToImage.toString(),
                           fit: BoxFit.fitHeight,
                           height: 310,
                         )
                       : Image.file(
-                          File(data.urlToImage.toString()),
+                          File(news.urlToImage.toString()),
                           height: 310,
                           fit: BoxFit.fitHeight,
                         ),
@@ -75,21 +79,23 @@ class NewsDetails extends StatelessWidget {
                       left: 30,
                       right: 20,
                       bottom: 5,
-                      child: data.author != null
-                          ? Text(
-                              data.title.toString(),
-                              maxLines: 3,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontSize: 22, color: Colors.white),
-                            )
-                          : const Text('author',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white)))
+                      child: Text(
+                        news.title.toString(),
+                        maxLines: 3,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 22, color: Colors.white),
+                      )
+
+                    // news.author != null
+                      //     ?                           : const Text('author',
+                      //         style:
+                      //             TextStyle(fontSize: 20, color: Colors.white))
+                  )
                 ],
               ),
             ),
-            bottom: NewsDetailsAppBar(),
+            bottom:const NewsDetailsAppBar(),
           ),
           SliverList(
             delegate: SliverChildListDelegate([
@@ -102,11 +108,11 @@ class NewsDetails extends StatelessWidget {
                           topLeft: Radius.circular(30))),
                   child: Column(
                     children: [
-                      newsContent(data.title.toString().toString(),
+                      newsContent(news.title.toString().toString(),
                           Theme.of(context).textTheme.headline1),
-                      newsContent(data.description.toString().toString(),
+                      newsContent(news.description.toString().toString(),
                           Theme.of(context).textTheme.headline2),
-                      newsContent(data.content.toString().toString(),
+                      newsContent(news.content.toString().toString(),
                           Theme.of(context).textTheme.headline3),
                     ],
                   )),

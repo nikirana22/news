@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../providers/news.dart';
 
 class BottomNews extends StatelessWidget {
-  List<News> articles;
-  bool isOnline;
+  final List<News> articles;
+  final bool isOnline;
 
-  BottomNews({
+  const BottomNews({
     Key? key,
     required this.articles,
     required this.isOnline,
@@ -33,9 +33,7 @@ class BottomNews extends StatelessWidget {
             itemCount: articles.length,
             itemBuilder: (context, index) {
               return Container(
-                  // color: Colors.deepPurpleAccent,
                   height: height * 0.1,
-
                   margin: const EdgeInsets.only(bottom: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +52,6 @@ class BottomNews extends StatelessWidget {
                               height: height * 0.095,
                                   fit: BoxFit.fill)),
                       Container(
-                        // color: Colors.yellow,
                         height: height*0.1,
                         width: width*0.66,
                         alignment: Alignment.center,
@@ -65,8 +62,7 @@ class BottomNews extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
 
                           children: [
-                            SizedBox
-                              (
+                            SizedBox(
                                 width: width*0.8,
                                 child: Padding(
                                   padding:
@@ -80,6 +76,7 @@ class BottomNews extends StatelessWidget {
                             const SizedBox(
                               height: 10,
                             ),
+
                             Text(
                               articles[index].publishedAt.toString(),
                               style: const TextStyle(fontSize: 7),

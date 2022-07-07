@@ -11,7 +11,6 @@ import '../providers/news.dart';
 class DatabaseProvider with ChangeNotifier {
   List<News> _articlesDatabae = [];
   final CacheManager _cacheManager = DefaultCacheManager();
-  // File? imageFile;
 
 
   List<News> get articlesDatabase {

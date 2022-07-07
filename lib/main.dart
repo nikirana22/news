@@ -49,11 +49,10 @@ class _MyHomePageState extends State<_MyHomePage> {
 
   List<Widget> pageList = [
     Home(),
-    Favorite(),
+    const Favorite(),
     RecentlyWatch(),
-    Container(
-      color: Colors.yellow,
-    )];
+    Container(color: Colors.yellow,)
+  ];
 
   @override
   Widget build(BuildContext context) {

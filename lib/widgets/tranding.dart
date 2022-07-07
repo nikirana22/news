@@ -7,7 +7,7 @@ class Tranding extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size=MediaQuery.of(context).size;
     double height=size.height;
-    double width =size.width;
+    // double width =size.width;
     return Container(
 
       padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -15,11 +15,10 @@ class Tranding extends StatelessWidget {
       color: Colors.white,
       width: double.infinity,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Icon(Icons.point)
           const Text(
             'trending ',
-
             style: TextStyle(
                 fontSize: 30, fontWeight: FontWeight.bold
             ),
@@ -39,7 +38,6 @@ class Tranding extends StatelessWidget {
                 MaterialStateProperty.all(const Color.fromRGBO(215, 79, 103, 1))),
           )
         ],
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
       ),
     );
   }

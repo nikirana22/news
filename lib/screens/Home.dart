@@ -18,8 +18,8 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with WidgetsBindingObserver {
   List<News> _newList = [];
   late bool _isOnline;
-
-  //https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=a76eab3a9db6401986b50fc441c1ce56
+  //todo Can we change this class from StatefulWidget to StatelessWidget
+//https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=a76eab3a9db6401986b50fc441c1ce56
 
   @override
   void initState() {
@@ -28,8 +28,10 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
     fetchData();
   }
 
+  // we can make a common provider for fetching the data from Api as well as Database
+  // that provider will check the connectivity if user doesn't have internet then that provider will give us Database data
+  //otherwise it will give us Api Data
   void fetchData() async {
-    //todo same in Articles(news class) Class
     // todo i want to send this method in provider class. is it correct to check Connectivity() on UI
     var connectivityCheck = await Connectivity().checkConnectivity();
     if (connectivityCheck == ConnectivityResult.wifi ||
@@ -98,49 +100,43 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                     viewportFraction: 0.8,
                     itemCount: _newList.length,
                     itemBuilder: (_, index) {
-                      if (_newList[index].urlToImage != null) {
+                      // if (_newList[index].urlToImage != null) {
                         return TopNews(
                           newsData: _newList[index],
                           isOnline: _isOnline,
-                          index: index,
+                         // index: index,
                         );
-                      } else {
-                        return Container(
-                            height: height * 0.26,
-                            width: width * 1,
-                            margin: const EdgeInsets.only(bottom: 5),
-                            color: Colors.purpleAccent,
-                            child: const Text('No..............'));
-                      }
+                      // } else {
+                      //   return Container(
+                      //       height: height * 0.26,
+                      //       width: width * 1,
+                      //       margin: const EdgeInsets.only(bottom: 5),
+                      //       color: Colors.purpleAccent,
+                      //       child: const Text('No..............'));
+                      // }
                     }),
               ),
               Tranding(),
+              //todo TimerZome (4 hour before) is pending
               BottomNews(
                 isOnline: _isOnline,
                 articles: _newList,
               ),
             ],
           )
-        : const Center(
-            child: CircularProgressIndicator(
-            color: Colors.white,
-          ));
+        : SizedBox(
+      height: height*0.8,
+          width: width,
+          child: const Center(
+              child: CircularProgressIndicator(
+              color: Colors.white,
+            )),
+        );
   }
-
-  // void fatchApiData(Articles articles) async {
-  //   if (articles.newsList.isEmpty) {
-  //     await articles.fetchArticlesForCategory();
-  //     setState(() {
-  //       _newList = articles.newsList;
-  //     });
-  //   }
-  // }
 
   void onCategoryChange(int index) async {
     Articles articles = Provider.of<Articles>(context, listen: false);
     await articles.categoryChangeButtonClick(index);
-
-    // await articles.fetchArticlesForCategory();
     setState(() {
       _newList = articles.newsList;
     });
@@ -172,6 +168,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           labelStyle: const TextStyle(fontSize: 25),
           unselectedLabelStyle: const TextStyle(fontSize: 15),
           tabs: [
+            //todo  use Category in this class
             Tab(text: Articles.categoryList[0].toString()),
             Tab(text: Articles.categoryList[1].toString()),
             Tab(text: Articles.categoryList[2].toString()),

@@ -1,46 +1,61 @@
 import 'package:flutter/material.dart';
+
 class NewsDetailsAppBar extends StatelessWidget with PreferredSizeWidget {
+  const NewsDetailsAppBar({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    Size size=MediaQuery.of(context).size;
+    double height=size.height;
     return Container(
-      height: 60,
+      height: height*0.085,
       padding: const EdgeInsets.symmetric(horizontal: 35),
-      // margin: const EdgeInsets.symmetric(horizontal: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.black,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: const [
-          Icon(
-            Icons.facebook,
-            size: 15,
-            color: Colors.white60,
-          ),
-          Icon(
-            Icons.whatsapp,
-            color: Colors.white60,
-            size: 15,
-          ),
-          Icon(
-            Icons.email,
-            color: Colors.white60,
-            size: 15,
-          ),
-          Icon(
-            Icons.share,
-            color: Colors.white60,
-            size: 15,
-          ),
-          Icon(
-            Icons.favorite,
-            size: 15,
-            color: Colors.white60,
-          )
+        children: [
+          icon(Icons.facebook,),
+          icon(Icons.whatsapp,),
+          icon(Icons.email,),
+          icon(Icons.share,),
+          icon(Icons.favorite,),
+
+          // Icon(
+          //   size: 15,
+          //   color: Colors.white60,
+          // ),
+          // Icon(
+          //   Icons.whatsapp,
+          //   color: Colors.white60,
+          //   size: 15,
+          // ),
+          // Icon(
+          //   Icons.email,
+          //   color: Colors.white60,
+          //   size: 15,
+          // ),
+          // Icon(
+          //   Icons.share,
+          //   color: Colors.white60,
+          //   size: 15,
+          // ),
+          // Icon(
+          //   Icons.favorite,
+          //   size: 15,
+          //   color: Colors.white60,
+          // )
         ],
       ),
+    );
+  }
+  Widget icon(IconData iconData){
+    return Icon(
+      iconData,
+      size: 15,
+      color: Colors.white60,
     );
   }
 
